@@ -1,27 +1,32 @@
 class UsersController < ApplicationController
   
+  def edit
+    @user = User.find(params[:id])
+  end
+  
   # indexのメソッド
   def index
     @users = User.all.page(params[:page])
-    
-    if @user.save
-      flash[:sucess] = 'ユーザを登録しました。'
-      
-      # users#show のアクションへリクエストを出す
-      # createアクション⇢showアクション⇢showのviewクラス(show.html.erb)が呼ばれる
-      redirect_to @user
-      
-    else
-      flash.now[:danger] = 'ユーザの登録に失敗しました。'
-      
-      # リクエストせずレンダリングで新規作成画面(users/new.html.erb)を表示
-      render :new
-      
-    end
   end
   
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.order('created_at DESC').page(params[:page])
+    
+    # 親のメソッドcounts(user)を呼ぶ
+    counts(@user)
+  end
+  
+  def update
+    @user = User.find(params[:id])
+    
+    if @user.update(user_params)
+      flash[:sucess] = 'Userは正常に更新されました'
+      redirect_to @user
+    else
+      flash.now[:danger] = 'Userは更新されませんでした'
+      render :edit
+    end
   end
 
   def new
@@ -40,6 +45,18 @@ class UsersController < ApplicationController
     end
   end
   
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    
+    # セッション情報を削除
+    session[:user_id] = nil
+    
+    flash[:success] = 'Userは正常に削除されました'
+    redirect_to root_url
+    
+  end
+  
   # private 処理
   private
   
@@ -47,7 +64,18 @@ class UsersController < ApplicationController
   # 画面から取得するパラーメータを指定して取得
   # ※ password_confirmation : パスワードの確認用入力の値
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :age, :selfintro)
   end
 
+  def allow_only_the_user
+    @user = User.find(params[:id])
+    
+    # ユーザが現在ログイン中のユーザと違う場合には不正アクセスとみなし、root_urlにリダイレクトする 
+    unless @user == current_user
+      flash[:danger] = '不正なエクセスです'
+      redirect_to root_url
+    end
+
+  end
+  
 end

@@ -18,7 +18,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
                 aria-haspopup="true" aria-expanded="false"><%= current_user.name %><span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><% link_to 'My profile', user_path(current_user) %></li>
+                <li><%= link_to 'My profile', user_path(current_user) %></li>
+                <li><%= link_to 'Edit Profile', edit_user_path(current_user) %></li>
+                <li><%= link_to '退会', current_user, method: :delete, data: { confirm: '本当に退会しますか？' } %></li>
                 <li role="separator" class="divider"></li>
                 <li><%= link_to 'Logout', logout_path, method: :delete %></li>
               </ul>

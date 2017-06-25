@@ -8,5 +8,11 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   get 'signup', to: 'users#new'
-  resources :users, only: [:index, :show, :new, :create]
+  
+  # Edited on 2017/06/23 to enable editing, deleting user's records (start) <<
+  # resources :users, only: [:index, :show, :new, :create]
+  resources :users
+  # Edited Ends >>
+  
+  resources :microposts, only: [:create, :destroy]
 end

@@ -1,13 +1,11 @@
 <div class="text-center">
-  <h1>Sign up</h1>
+  <h1>id: <%= @user.id %>, User Name: <%= @user.name %> のユーザ情報の編集ページ</h1>
 </div>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(@user) do |f| %>
-      <!-- エラーメッセージをレンダリングで表示する -->
-      <%= render 'layouts/error_messages', model: f.object %>
-      
+    
       <div class="form-group">
         <%= f.label :name, 'Name' %>
         <%= f.text_field :name, class: 'form-control' %>
@@ -22,7 +20,7 @@
         <%= f.label :password, 'Password' %>
         <%= f.password_field :password, class: 'form-control' %>
       </div>
-      
+    
       <div class="form-group">
         <%= f.label :password_confirmation, 'Confirmation' %>
         <%= f.password_field :password_confirmation, class: 'form-control' %>
@@ -37,8 +35,9 @@
         <%= f.label :selfintro, '自己紹介' %>
         <%= f.text_area :selfintro, class: 'form-control' %>
       </div>
-      
-      <%= f.submit 'Sign up', class: 'btn btn-primary btn-block' %>
-    <% end %>
+    
+      <%= f.submit 'Update Your Profile', class: 'btn btn-primary btn-block', data: { confirm: "ユーザ情報を更新してもよろしいですか?"} %>
+    <% end %>      
   </div>
+  
 </div>
