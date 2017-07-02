@@ -45,4 +45,10 @@ class User < ApplicationRecord
   def following?(other_user)
     self.followings.include?(other_user)
   end
+  
+  def feed_microposts
+    # Microspostのレコードで、フォローしているユーザ + 自分自身のidとなる
+    # レコードをすべて取得している
+    Micropost.where(user_id: self.following_ids + [self.id])
+  end
 end
