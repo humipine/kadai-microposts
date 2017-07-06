@@ -14,17 +14,18 @@ class User < ApplicationRecord
   
   # User:relationship= 1：多
   has_many :relationships
-  
-  # user.followings と書けば、user がフォローしている User 達を取得できるようにする。
-  # その機能を提供するのが has_many ..., through: ...
-  # "through: relationships"で、relationshipsを中間テーブルに指定
-  # "followings"は、筆者が命名したもので、クラス名とは関係ない。
   has_many :followings, through: :relationships, source: :follow
   
   # "has_many :relationships"の逆方向
   # "has_many :relationships"は、筆者が命名したもので、クラス名やオブジェクト名ではない
   has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverses_of_relationship, source: :user
+  
+  # ■お気に入りの設定
+  has_many :favorites
+  # Favoriteに登録されているレコードから、そのaddtofavorite_idに紐づく
+  # micropostsの全レコードの配列を取得するメソッド
+  has_many :favoritizings, through: :favorites, source: :addtofavorite
   
   
   # フォロー／アンフォローとは、中間テーブルのレコードを保存／削除することです
@@ -46,9 +47,32 @@ class User < ApplicationRecord
     self.followings.include?(other_user)
   end
   
+  # お気に入りに追加
+  def favoritize(micropost)
+    self.favorites.find_or_create_by(addtofavorite_id: micropost.id)
+  end
+  
+  def unfavoritize(micropost)
+    mic = self.favoritizings.find_by(id: micropost.id)
+    if mic
+      self.favorites.find_by(addtofavorite_id: mic.id).delete
+    end
+    
+    # favorite.destroy if favorite
+  end
+  def is_it_included_in_favorite?(micropost)
+    
+    self.favoritizings.include?(micropost)
+    
+  end
+  
+  #こちら7/4 4:41の解答用に仮作成していますmentor-kimura
+  def included_in_favorite?(micropost)
+    self.favoritizings.include?(micropost)
+  end
+  
   def feed_microposts
-    # Microspostのレコードで、フォローしているユーザ + 自分自身のidとなる
-    # レコードをすべて取得している
     Micropost.where(user_id: self.following_ids + [self.id])
   end
+ 
 end

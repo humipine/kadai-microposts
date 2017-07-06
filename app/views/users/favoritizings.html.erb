@@ -1,0 +1,33 @@
+<h1 style="text-align: center;">私のお気に入りリスト<small>My Favorites List</small></h1>
+<div class="container container-small" style="margin-top: 40px;">
+  <ul class="media-list">
+    <% @microposts.each do |micropost| %>
+      <% user = micropost.user %>
+      <li class="media">
+        <div class="media-left">
+          <img class="media-object img-rounded" src="<%= gravatar_url(micropost.user, options = { size: 50 }) %>" alt="">
+        </div>
+        <div class="media-body">
+          <div>
+            <%= link_to user.name, user_path(user) %> <span class="text-muted">posted at <%= micropost.created_at %></span>
+          </div>
+          <div>
+            <p><%= micropost.content %></p>
+          </div>
+          <div style="display:inline-flex">
+            <div>
+              <% if current_user == micropost.user %>
+                <%= link_to "Delete", micropost, method: :delete, data: { confirm: "削除してもよろしいですか？" }, class: 'btn btn-danger btn-xs' %>
+              <% end %>
+            </div>
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+              <%= render 'favorites/favoritize_button', mic: micropost, user: current_user %>
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+    
+    <%= paginate @microposts %>
+  </ul>
+</div>

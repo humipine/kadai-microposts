@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:index, :show, :edit, :update, :destroy]
+  before_action :require_user_logged_in, only: [:index, :show, :edit, :update, :destroy, :followings, :followers, :favoritizings]
   before_action :allow_only_the_user, only: [:edit, :update, :destroy]
   
   def edit
@@ -14,6 +14,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @microposts = @user.microposts.order('created_at DESC').page(params[:page])
+    @count_favoritizings = count_favoritizings(current_user)
     
     # 親のメソッドcounts(user)を呼ぶ
     counts(@user)
@@ -50,13 +51,21 @@ class UsersController < ApplicationController
   def followings
     @user = User.find(params[:id])
     @followings = @user.followings.page(params[:page])
+    @count_favoritizings = count_favoritizings(current_user)
     counts(@user)
   end
   
   def followers
     @user = User.find(params[:id])
     @followers = @user.followers.page(params[:page])
+    @count_favoritizings = count_favoritizings(current_user)
     counts(@user)
+  end
+  
+  def favoritizings
+    @user = User.find(params[:id])
+    @microposts = current_user.favoritizings.order('created_at DESC').page(params[:page])
+    @count_favoritizings = count_favoritizings(current_user)
   end
   
   def destroy
@@ -78,7 +87,7 @@ class UsersController < ApplicationController
   # 画面から取得するパラーメータを指定して取得
   # ※ password_confirmation : パスワードの確認用入力の値
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :age, :selfintro)
+    params.require(:user).permit(:id, :name, :email, :password, :password_confirmation, :age, :selfintro)
   end
 
   def allow_only_the_user
@@ -86,7 +95,7 @@ class UsersController < ApplicationController
     
     # ユーザが現在ログイン中のユーザと違う場合には不正アクセスとみなし、root_urlにリダイレクトする 
     unless @user == current_user
-      flash[:danger] = '不正なエクセスです'
+      flash[:danger] = '不正なアクセスです'
       redirect_to root_url
     end
 

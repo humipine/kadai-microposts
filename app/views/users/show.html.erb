@@ -13,7 +13,7 @@
     <p></p>Email: <%= @user.email %><br>
     年齢: <%= @user.age %><br>
     自己紹介: <%= @user.selfintro %><br></p>
-    <p></p><%= link_to '一覧に戻る', users_path, class: "btn btn-default col-xs-3" %>
+    <p><%= link_to '一覧に戻る', users_path, class: "btn btn-default col-xs-4" %>
     <% if @user == current_user %>
       <%= link_to '編集する', edit_user_path(@user), class: "btn btn-primary col-xs-3" %>
       <%= link_to '削除する', @user, method: :delete, class: "btn btn-danger col-xs-3", data: { confirm: '本当に退会しますか？' } %>

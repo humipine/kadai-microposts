@@ -6,7 +6,9 @@
           <%= f.text_area :content, class: 'form-control', rows: 5 %>
         </div>
         <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
-      <% end %>
+      <% end %><br><br>
+      <p><%= link_to favoritizings_user_path(current_user), class: "btn btn-success" do %>お気に入り _<span class="badge"><%= @count_favoritizings %></span><% end %></p>
+      
     </aside>
     <div class="col-xs-8">
       <%= render 'microposts/microposts', microposts: @microposts %>

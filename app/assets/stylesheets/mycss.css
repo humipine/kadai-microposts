@@ -1,0 +1,60 @@
+/*======================================
+=            ガター溝なしスタイリング            =
+======================================*/
+.container-small, .container-large {
+    max-width: 80%;
+}
+@media (min-width: 768px) {
+    .container-small {
+        width: 300px;
+    }
+    .container-large {
+        width: 970px;
+    }
+}
+@media (min-width: 992px) {
+    .container-small {
+        width: 500px;
+    }
+    .container-large {
+        width: 1170px;
+    }
+}
+@media (min-width: 1200px) {
+    .container-small {
+        width: 700px;
+    }
+    .container-large {
+        width: 1500px;
+    }
+}
+
+.center {
+  display: inline-block;
+  
+}
+.text_center {
+    text-align: center;
+}
+
+.bg_roundcolor {
+    background-color: #d1ffcf;
+}
+.userinfo_texts{
+    font-size: 2rem;
+}
+.flexiblebox {
+ display: -webkit-box;
+ display: -ms-flexbox;
+ display: flex; /* 縦方向中央揃え（Safari用） */
+ -webkit-box-align: center;
+     -ms-flex-align: center;
+         align-items: center; /* 縦方向中央揃え */ /* 横方向中央揃え（Safari用） */
+ -webkit-box-pack: center;
+     -ms-flex-pack: center;
+         justify-content: center; /* 横方向中央揃え */
+}
+
+.mg_bottom {
+    margin-bottom: 30px;
+}

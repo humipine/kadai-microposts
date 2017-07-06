@@ -1,0 +1,11 @@
+<% if current_user.is_it_included_in_favorite?(mic) %>
+  <%= form_for(current_user.favorites.find_by(addtofavorite_id: mic.id), html: { method: :delete }) do |f| %>
+    <%= hidden_field_tag :addtofavorite_id, mic.id %>
+    <%= f.submit 'Unfavoritize', class: 'btn btn-danger btn-xs' %>
+  <% end %>
+<% else %>
+  <%= form_for(current_user.favorites.build) do |f| %>
+    <%= hidden_field_tag :addtofavorite_id, mic.id %>
+    <%= f.submit 'Favoritize', class: 'btn btn-primary btn-xs' %>
+  <% end %>
+<% end %>

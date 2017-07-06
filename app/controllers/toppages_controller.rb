@@ -7,6 +7,7 @@ class ToppagesController < ApplicationController
       # すでに登録済みのレコードを取得
       # @microposts = current_user.microposts.order('created_at DESC').page(params[:page])
       @microposts = current_user.feed_microposts.order('created_at DESC').page(params[:page])
+      @count_favoritizings = count_favoritizings(@user)
     end
   end
 end

@@ -1,5 +1,16 @@
-<div class="text-center">
-  <h1>id: <%= @user.id %>, User Name: <%= @user.name %> のユーザ情報の編集ページ</h1>
+<%= stylesheet_link_tag "mycss", :media => "all", "data-turbolinks-track" => true %>
+<div class="text-center mg_bottom">
+  <h1 class="mg_bottom">ユーザ情報の編集ページ</h1>
+    <div calss="container">
+        <table class="tablea table-bordered center userinfo_texts">
+          <tr>
+            <th class="col-md-3 col-sm-3 col-xs-3 bg_roundcolor"><div class="flexiblebox">ユーザID</div></th>
+            <td class="col-md-1 col-sm-1 col-xs-1"><div class="flexiblebox"><%= @user.id %></div></td>
+            <th class="col-md-3 col-sm-3 col-xs-3 bg_roundcolor"><div class="flexiblebox">Name</div></th>
+            <td class="col-md-5 col-sm-5 col-xs-5"><div class="flexiblebox"><%= @user.name %></div></td>
+          </tr>
+        </table>
+    </div>
 </div>
 
 <div class="row">
